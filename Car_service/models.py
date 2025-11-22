@@ -26,7 +26,7 @@ class Client(AbstractUser):
 
 class Seller(models.Model):
     client = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    seller_license = models.CharField(max_length=120)
+    seller_license = models.CharField(max_length=120, unique=True)
     license_expiration_date = models.DateField()
 
     def __str__(self):
@@ -37,8 +37,8 @@ class Car(models.Model):
     model = models.CharField(max_length=120)
     year = models.IntegerField()
     mileage = models.IntegerField()
-    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE)
-    owner = models.ForeignKey(Seller, on_delete=models.CASCADE)
+    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE, related_name='cars')
+    owner = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name="cars")
 
     def __str__(self):
         return self.model

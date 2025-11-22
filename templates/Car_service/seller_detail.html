@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>{{ seller.client.username }}</h1>
+  <h2>License: {{ seller.seller_license }}</h2>
+  <table>
+    <tr>
+      <th>Manufacturer</th>
+      <th>Model</th>
+      <th>Year</th>
+      <th>Mileage</th>
+    </tr>
+    {% for car in seller.cars.all %}
+      <tr>
+        <td>{{ car.manufacturer.name }}</td>
+        <td>{{ car.model }}</td>
+        <td>{{ car.year }}</td>
+        <td>{{ car.mileage }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+  {% if seller.client == user %}
+  <a href="{% url 'cars:seller-delete' pk=seller.pk %}">Delete me with sellers</a>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1 class="h2 mb-3">Sellers list</h1>
+  {% if not seller_user %}
+  <a href="{% url 'cars:seller-create' %}">Add me to sellers</a>
+  {% endif %}
+
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th>Seller</th>
+          <th>License</th>
+          <th>License expiration date</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for seller in seller_list %}
+        <tr>
+          <td>
+            <a href="{% url "cars:seller-detail" pk=seller.pk %}">{{ seller.client.username }}</a>
+          </td>
+          <td>{{ seller.seller_license }}</td>
+          <td>{{ seller.license_expiration_date }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="3" class="text-center">No sellers available</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

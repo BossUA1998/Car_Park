@@ -1,0 +1,26 @@
+{% if user.is_authenticated %}
+  <div class="card mb-3">
+    <div class="card-body p-2">
+      <div class="text-muted small">User:</div>
+      <strong>{{ user.username }}</strong>
+      <form action="{% url 'logout' %}" method="post" class="mt-2">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-danger btn-sm btn-block">Logout</button>
+      </form>
+    </div>
+  </div>
+{% else %}
+  <div class="mb-3">
+    <a href="{% url 'login' %}" class="btn btn-primary btn-block">Login</a>
+  </div>
+{% endif %}
+
+<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+  <span>Navigation</span>
+</h6>
+<div class="list-group list-group-flush">
+  <a href="{% url 'cars:index' %}" class="list-group-item list-group-item-action bg-light">Home</a>
+  <a href="{% url 'cars:car-list' %}" class="list-group-item list-group-item-action bg-light">Cars</a>
+  <a href="{% url 'cars:manufacturer-list' %}" class="list-group-item list-group-item-action bg-light">Manufacturers</a>
+  <a href="{% url 'cars:seller-list' %}" class="list-group-item list-group-item-action bg-light">Sellers</a>
+</div>
