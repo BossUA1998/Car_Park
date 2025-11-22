@@ -48,6 +48,27 @@ class ManufacturerListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 5
 
 
+class ManufacturerCarsListView(LoginRequiredMixin, generic.ListView):
+    model = Manufacturer
+    paginate_by = 10
+    template_name = "Car_service/manufacturer_cars.html"
+    context_object_name = "manufacturer_cars"
+
+    def get_context_data(
+            self, *, object_list=..., **kwargs
+    ):
+        context = super().get_context_data(**kwargs)
+        context["manufacturer"] = Manufacturer.objects.get(pk=self.kwargs["pk"])
+        return context
+
+
+    def get_queryset(self):
+        return Manufacturer.objects.get(
+            pk=self.kwargs.get('pk')
+        ).cars.all()
+
+
+
 # sellers
 class SellerListView(LoginRequiredMixin, generic.ListView):
     model = Seller

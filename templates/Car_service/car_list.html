@@ -9,7 +9,7 @@
           <th>Model</th>
           <th>Year</th>
           <th>Mileage</th>
-          <th>Seller</th>
+          <th>Price</th>
         </tr>
       </thead>
       <tbody>
@@ -20,7 +20,7 @@
           </td>
           <td>{{ car.year }}</td>
           <td>{{ car.mileage }}</td>
-          <td>{{ car.owner.client.username }}</td>
+          <td>{{ car.price }}</td>
         </tr>
       {% empty %}
         <tr>

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Cars for sale with {{ manufacturer.name }}</h1>
+  <table>
+    <tr>
+      <th>Model</th>
+      <th>Year</th>
+      <th>Mileage</th>
+      <th>Price</th>
+    </tr>
+    {% for car in manufacturer_cars %}
+      <tr>
+        <td>{{ car.model }}</td>
+        <td>{{ car.year }}</td>
+        <td>{{ car.mileage }}</td>
+        <td>{{ car.price }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

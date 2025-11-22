@@ -37,7 +37,9 @@ class Car(models.Model):
     model = models.CharField(max_length=120)
     year = models.IntegerField()
     mileage = models.IntegerField()
-    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE, related_name='cars')
+    price = models.IntegerField()
+    comment = models.CharField(max_length=255, blank=True, null=True)
+    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE, related_name="cars")
     owner = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name="cars")
 
     def __str__(self):
