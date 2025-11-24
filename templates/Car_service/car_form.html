@@ -1,16 +1,31 @@
 {% extends "base.html" %}
 {% load crispy_forms_filters %}
 
-
 {% block content %}
-  {% if car.owner.client == user %}
-  <h1>{{ object|yesno:"Update,Create" }} car</h1>
-  <form action="" method="post">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <input type="submit" value="{{ object|yesno:"Update,Create" }}">
-  </form>
-  {% else %}
-    <p>No permissions to change</p>
-  {% endif %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow">
+        <div class="card-body">
+          <h2 class="text-center mb-4">{{ object|yesno:"Update Car,List New Car" }}</h2>
+
+          {% if not object or car.owner.client == user %}
+          <form action="" method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="mt-4">
+                <input type="submit" class="btn btn-success btn-block btn-lg" value="{{ object|yesno:"Save Changes,Create Car" }}">
+                <a href="{% url 'cars:car-list' %}" class="btn btn-link btn-block text-muted">Cancel</a>
+            </div>
+          </form>
+          {% else %}
+            <div class="alert alert-warning text-center">
+                No permissions to change this car entry.
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

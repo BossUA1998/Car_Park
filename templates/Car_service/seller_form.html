@@ -2,7 +2,7 @@
 {% load crispy_forms_filters %}
 
 {% block content %}
-{% if seller.client == user %}
+{% if not object or seller.client == user %}
 <div class="container mt-4">
   <div class="row justify-content-center">
     <div class="col-md-6">

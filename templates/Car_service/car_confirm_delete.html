@@ -1,13 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-  {% if car.owner.client == user %}
-  <h1>Confirm delete</h1>
-  <form action="" method="post">
-    {% csrf_token %}
-    <input type="submit" value="Delete">
-  </form>
-  {% else %}
-    <p>No permissions to delete</p>
-  {% endif %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-body text-center p-5">
+          {% if car.owner.client == user %}
+            <h2 class="text-danger mb-3">Delete Car?</h2>
+            <p class="lead mb-4">Are you sure you want to remove the <strong>{{ car.model }} ({{ car.year }})</strong> from listings?</p>
+
+            <form action="" method="post">
+              {% csrf_token %}
+              <input type="submit" class="btn btn-danger btn-lg px-5" value="Delete">
+              <br>
+              <a href="{% url 'cars:car-list' %}" class="btn btn-link text-muted mt-2">Cancel</a>
+            </form>
+          {% else %}
+            <div class="alert alert-danger">
+                <p class="mb-0">You do not have permission to delete this entry.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

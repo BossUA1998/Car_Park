@@ -2,14 +2,30 @@
 {% load crispy_forms_filters %}
 
 {% block content %}
-  {% if user.is_superuser %}
-	<h1>{{ object|yesno:"Update,Add" }} manufacturer</h1>
-  <form action="" method="post">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <input type="submit" value="{{ object|yesno:"Update,Add" }}">
-  </form>
-  {% else %}
-    <p>You no a permisions to {{ object|yesno:"update,create" }} manufacturer!</p>
-  {% endif %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0 text-center">{{ object|yesno:"Update,Add" }} Manufacturer</h4>
+        </div>
+        <div class="card-body">
+          {% if user.is_superuser %}
+            <form action="" method="post">
+              {% csrf_token %}
+              {{ form|crispy }}
+              <div class="d-grid gap-2 mt-4">
+                 <input type="submit" class="btn btn-primary btn-block" value="{{ object|yesno:"Save Changes,Add Manufacturer" }}">
+              </div>
+            </form>
+          {% else %}
+            <div class="alert alert-danger text-center" role="alert">
+              You do not have permission to {{ object|yesno:"update,create" }} a manufacturer!
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

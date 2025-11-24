@@ -1,13 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-  {% if user.is_superuser %}
-  <h1>Confirm delete</h1>
-  <form action="" method="post">
-    {% csrf_token %}
-    <input type="submit" value="Delete">
-  </form>
-  {% else %}
-    <p>No permissions to delete</p>
-  {% endif %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card border-danger shadow">
+        <div class="card-header bg-danger text-white">
+          <h4 class="mb-0">Confirm Delete</h4>
+        </div>
+        <div class="card-body text-center">
+          {% if user.is_superuser %}
+            <p class="lead">Are you sure you want to delete the manufacturer <strong>{{ object.name }}</strong>?</p>
+            <p class="text-muted small">This action cannot be undone and may delete associated cars.</p>
+
+            <form action="" method="post" class="mt-4">
+              {% csrf_token %}
+              <input type="submit" class="btn btn-danger px-4" value="Yes, Delete">
+              <a href="{% url 'cars:manufacturer-list' %}" class="btn btn-secondary px-4">Cancel</a>
+            </form>
+          {% else %}
+            <div class="alert alert-warning">No permissions to delete.</div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
