@@ -16,7 +16,12 @@ class ClientAdmin(UserAdmin):
 
 @admin.register(Car)
 class CarAdmin(admin.ModelAdmin):
-    list_display = admin.ModelAdmin.list_display + ("owner", "year", "mileage", "manufacturer")
+    list_display = admin.ModelAdmin.list_display + (
+        "owner",
+        "year",
+        "mileage",
+        "manufacturer",
+    )
     list_filter = ("year", "mileage")
     search_fields = ("model",)
 

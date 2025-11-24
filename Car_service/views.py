@@ -7,7 +7,13 @@ from django.urls import reverse, reverse_lazy
 from django.views import generic
 from django.db.utils import IntegrityError
 
-from Car_service.forms import SellerLicenseForm, CarCreateForm
+from Car_service.forms import (
+    SellerLicenseForm,
+    CarCreateForm,
+    CarSearchForm,
+    ManufacturerSearchForm,
+    SellerSearchForm,
+)
 from Car_service.models import Car, Manufacturer, Seller
 
 
@@ -16,21 +22,17 @@ def index(request):
     num_manufacturers = Manufacturer.objects.count()
     num_sellers = Seller.objects.count()
 
-    num_visits = request.session.get('num_visits', 0)
-    request.session['num_visits'] = num_visits + 1
+    num_visits = request.session.get("num_visits", 0)
+    request.session["num_visits"] = num_visits + 1
 
     context = {
-        'num_cars': num_cars,
-        'num_manufacturers': num_manufacturers,
-        'num_sellers': num_sellers,
-        'num_visits': num_visits,
+        "num_cars": num_cars,
+        "num_manufacturers": num_manufacturers,
+        "num_sellers": num_sellers,
+        "num_visits": num_visits,
     }
 
-    return render(
-        request,
-        template_name="Car_service/index.html",
-        context=context
-    )
+    return render(request, template_name="Car_service/index.html", context=context)
 
 
 # cars
@@ -44,6 +46,19 @@ class CarsObjectValidatorMixin:
 class CarsListView(LoginRequiredMixin, generic.ListView):
     model = Car
     paginate_by = 5
+
+    def get_context_data(self, *, object_list=..., **kwargs):
+        context = super().get_context_data(**kwargs)
+        _model = self.request.GET.get("model")
+        context["search_form"] = CarSearchForm(initial={"model": _model})
+        return context
+
+    def get_queryset(self):
+        form = CarSearchForm(self.request.GET)
+        self.queryset = Car.objects.select_related("manufacturer", "owner").all()
+        if form.is_valid():
+            return self.queryset.filter(model__icontains=form.cleaned_data["model"])
+        return self.queryset
 
 
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
@@ -92,11 +107,48 @@ class ManufacturerListView(LoginRequiredMixin, generic.ListView):
     model = Manufacturer
     paginate_by = 5
 
+    def get_context_data(self, *, object_list=..., **kwargs):
+        context = super().get_context_data(**kwargs)
+        _name = self.request.GET.get("name")
+        context["search_form"] = ManufacturerSearchForm(initial={"name": _name})
+        return context
 
-class ManufacturerCarsListView(LoginRequiredMixin, generic.DetailView):
+    def get_queryset(self):
+        form = ManufacturerSearchForm(self.request.GET)
+        self.queryset = Manufacturer.objects.all()
+        if form.is_valid():
+            return self.queryset.filter(name__icontains=form.cleaned_data["name"])
+        return self.queryset
+
+
+# class ManufacturerCarsListView(LoginRequiredMixin, generic.DetailView):
+#     model = Manufacturer
+#     paginate_by = 5
+#     template_name = "Car_service/manufacturer_cars.html"
+
+
+class ManufacturerCarsListView(LoginRequiredMixin, generic.ListView):
     model = Manufacturer
-    paginate_by = 10
+    paginate_by = 5
+    context_object_name = "manufacturer_cars"
     template_name = "Car_service/manufacturer_cars.html"
+
+    def get_context_data(self, *, object_list=..., **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["manufacturer"] = Manufacturer.objects.get(pk=self.kwargs["pk"])
+
+        _model = self.request.GET.get("model")
+        context["search_form"] = CarSearchForm(initial={"model": _model})
+        return context
+
+    def get_queryset(self):
+        form = CarSearchForm(self.request.GET)
+        self.queryset = Manufacturer.objects.get(pk=self.kwargs["pk"]).cars.all()
+        if form.is_valid():
+            self.queryset = self.queryset.filter(
+                model__icontains=form.cleaned_data["model"]
+            )
+        return self.queryset
 
 
 class ManufacturerCreateView(LoginRequiredMixin, generic.CreateView):
@@ -105,13 +157,17 @@ class ManufacturerCreateView(LoginRequiredMixin, generic.CreateView):
     success_url = reverse_lazy("cars:manufacturer-list")
 
 
-class ManufacturerUpdateView(LoginRequiredMixin, ImportantSuperuserValidatorMixin, generic.UpdateView):
+class ManufacturerUpdateView(
+    LoginRequiredMixin, ImportantSuperuserValidatorMixin, generic.UpdateView
+):
     model = Manufacturer
     fields = "__all__"
     success_url = reverse_lazy("cars:manufacturer-list")
 
 
-class ManufacturerDeleteView(LoginRequiredMixin, ImportantSuperuserValidatorMixin, generic.DeleteView):
+class ManufacturerDeleteView(
+    LoginRequiredMixin, ImportantSuperuserValidatorMixin, generic.DeleteView
+):
     model = Manufacturer
     success_url = reverse_lazy("cars:manufacturer-list")
 
@@ -128,16 +184,27 @@ class SellerListView(LoginRequiredMixin, generic.ListView):
     model = Seller
     paginate_by = 5
 
-    def get_context_data(
-            self, *, object_list=..., **kwargs
-    ):
+    def get_context_data(self, *, object_list=..., **kwargs):
         context = super().get_context_data(**kwargs)
-        context["seller_user"] = Seller.objects.filter(client=self.request.user).exists()
+        context["seller_user"] = Seller.objects.filter(
+            client=self.request.user
+        ).exists()
         try:
             context["seller"] = Seller.objects.get(client=self.request.user)
         except Seller.DoesNotExist:
             context["seller"] = None
+        _username = self.request.GET.get("username")
+        context["search_form"] = SellerSearchForm(initial={"username": _username})
         return context
+
+    def get_queryset(self):
+        form = SellerSearchForm(self.request.GET)
+        self.queryset = Seller.objects.all()
+        if form.is_valid():
+            self.queryset = Seller.objects.filter(
+                client__username__icontains=form.cleaned_data["username"]
+            )
+        return self.queryset
 
 
 class SellerDetailView(LoginRequiredMixin, generic.DetailView):
@@ -168,12 +235,16 @@ class SellerCreateView(LoginRequiredMixin, SellerFormMixin, generic.CreateView):
         return reverse_lazy("cars:seller-detail", kwargs={"pk": self.object.pk})
 
 
-class SellerUpdateView(LoginRequiredMixin, SellerObjectValidatorMixin, SellerFormMixin, generic.UpdateView):
+class SellerUpdateView(
+    LoginRequiredMixin, SellerObjectValidatorMixin, SellerFormMixin, generic.UpdateView
+):
     model = Seller
     form_class = SellerLicenseForm
 
 
-class SellerDeleteView(LoginRequiredMixin, SellerObjectValidatorMixin, generic.DeleteView):
+class SellerDeleteView(
+    LoginRequiredMixin, SellerObjectValidatorMixin, generic.DeleteView
+):
     model = Seller
     success_url = reverse_lazy("cars:seller-list")
 

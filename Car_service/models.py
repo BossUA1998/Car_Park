@@ -12,7 +12,9 @@ class Manufacturer(models.Model):
 
 
 class Client(AbstractUser):
-    is_seller = models.BooleanField(default=False, )
+    is_seller = models.BooleanField(
+        default=False,
+    )
 
     def save(
         self,
@@ -39,7 +41,9 @@ class Car(models.Model):
     mileage = models.IntegerField()
     price = models.IntegerField()
     comment = models.CharField(max_length=255, blank=True, null=True)
-    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE, related_name="cars")
+    manufacturer = models.ForeignKey(
+        Manufacturer, on_delete=models.CASCADE, related_name="cars"
+    )
     owner = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name="cars")
 
     def __str__(self):

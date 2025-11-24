@@ -38,9 +38,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "debug_toolbar",
-    'crispy_forms',
+    "crispy_forms",
     "crispy_bootstrap4",
-    "Car_service"
+    "Car_service",
 ]
 
 MIDDLEWARE = [
@@ -59,8 +59,7 @@ ROOT_URLCONF = "Car_park.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates']
-        ,
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

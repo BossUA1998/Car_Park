@@ -51,9 +51,7 @@ class SellerLicenseForm(forms.ModelForm):
                 qs_client = qs_client.exclude(pk=self.instance.pk)
 
             if qs_client.exists():
-                raise ValidationError(
-                    "You are already registered."
-                )
+                raise ValidationError("You are already registered.")
 
         return self.cleaned_data
 
@@ -73,7 +71,23 @@ class CarCreateForm(forms.ModelForm):
         if not self.user.is_seller:
             raise ValidationError("You are not a seller.")
 
-        if Seller.objects.get(client=self.user).license_expiration_date < datetime.now().date():
+        if (
+            Seller.objects.get(client=self.user).license_expiration_date
+            < datetime.now().date()
+        ):
             raise ValidationError("Your license has expired.")
 
         return self.cleaned_data
+
+
+# search forms
+class CarSearchForm(forms.Form):
+    model = forms.CharField(max_length=120)
+
+
+class ManufacturerSearchForm(forms.Form):
+    name = forms.CharField(max_length=120)
+
+
+class SellerSearchForm(forms.Form):
+    username = forms.CharField(max_length=120)

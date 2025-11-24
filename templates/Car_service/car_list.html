@@ -1,43 +1,46 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
 
 {% block content %}
-<div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h2">Cars list</h1>
-    {% if user.is_seller %}
-      <a href="{% url 'cars:car-create' %}" class="btn btn-success">Add car</a>
-    {% endif %}
-  </div>
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="h2">Cars list</h1>
+      {% include "includes/search_form.html" %}
 
-  <div class="card shadow-sm">
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table table-striped table-hover mb-0">
-          <thead class="thead-light">
+      {% if user.is_seller %}
+        <a href="{% url 'cars:car-create' %}" class="btn btn-success">Add car</a>
+      {% endif %}
+    </div>
+
+    <div class="card shadow-sm">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover mb-0">
+            <thead class="thead-light">
             <tr>
               <th class="border-top-0">Model</th>
               <th class="border-top-0">Year</th>
               <th class="border-top-0">Mileage</th>
               <th class="border-top-0">Price</th>
             </tr>
-          </thead>
-          <tbody>
-          {% for car in car_list %}
-            <tr style="cursor: pointer" onclick="window.location='{% url 'cars:car-detail' pk=car.pk %}'">
-              <td class="align-middle">{{ car.model }}</td>
-              <td class="align-middle">{{ car.year }}</td>
-              <td class="align-middle">{{ car.mileage }} km</td>
-              <td class="align-middle font-weight-bold text-success">{{ car.price }} $</td>
-            </tr>
-          {% empty %}
-            <tr>
-              <td colspan="4" class="text-center py-4 text-muted">No cars available</td>
-            </tr>
-          {% endfor %}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+            {% for car in car_list %}
+              <tr style="cursor: pointer" onclick="window.location='{% url 'cars:car-detail' pk=car.pk %}'">
+                <td class="align-middle">{{ car.model }}</td>
+                <td class="align-middle">{{ car.year }}</td>
+                <td class="align-middle">{{ car.mileage }} km</td>
+                <td class="align-middle font-weight-bold text-success">{{ car.price }} $</td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="4" class="text-center py-4 text-muted">No cars available</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
 {% endblock %}
