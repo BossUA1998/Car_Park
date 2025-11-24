@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% if user.is_superuser %}
+  <h1>Confirm delete</h1>
+  <form action="" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Delete">
+  </form>
+  {% else %}
+    <p>No permissions to delete</p>
+  {% endif %}
+{% endblock %}

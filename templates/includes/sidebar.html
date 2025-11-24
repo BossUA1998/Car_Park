@@ -1,7 +1,13 @@
 {% if user.is_authenticated %}
   <div class="card mb-3">
     <div class="card-body p-2">
-      <div class="text-muted small">User:</div>
+      <div class="text-muted small">
+        {% if user.is_seller %}
+          Seller:
+        {% else %}
+          User:
+        {% endif %}
+      </div>
       <strong>{{ user.username }}</strong>
       <form action="{% url 'logout' %}" method="post" class="mt-2">
         {% csrf_token %}

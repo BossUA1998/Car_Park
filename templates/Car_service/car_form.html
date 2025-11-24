@@ -3,10 +3,14 @@
 
 
 {% block content %}
-  <h1>Create car</h1>
+  {% if car.owner.client == user %}
+  <h1>{{ object|yesno:"Update,Create" }} car</h1>
   <form action="" method="post">
     {% csrf_token %}
     {{ form|crispy }}
-    <input type="submit" value="Create">
+    <input type="submit" value="{{ object|yesno:"Update,Create" }}">
   </form>
+  {% else %}
+    <p>No permissions to change</p>
+  {% endif %}
 {% endblock %}

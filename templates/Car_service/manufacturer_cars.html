@@ -5,6 +5,14 @@
   <div class="mb-4">
     <h1 class="display-4">Cars for sale</h1>
     <h2 class="h4 text-muted">Manufacturer: <span class="text-primary">{{ manufacturer.name }}</span></h2>
+    {% if user.is_superuser %}
+    <h3>
+      <a href="{% url 'cars:manufacturer-update' pk=manufacturer.pk %}">Update manufacturer</a>
+    </h3>
+    <h4>
+      <a href="{% url 'cars:manufacturer-delete' pk=manufacturer.pk %}">Delete manufacturer</a>
+    </h4>
+    {% endif %}
   </div>
 
   <hr>
@@ -20,7 +28,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for car in manufacturer_cars %}
+        {% for car in manufacturer.cars.all %}
           <tr style="cursor: pointer;" onclick="window.location='{% url 'cars:car-detail' pk=car.pk %}'">
             <td>{{ car.model }}</td>
             <td>{{ car.year }}</td>

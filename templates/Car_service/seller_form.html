@@ -2,20 +2,24 @@
 {% load crispy_forms_filters %}
 
 {% block content %}
+{% if seller.client == user %}
 <div class="container mt-4">
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="card shadow-sm">
         <div class="card-body">
-          <h1 class="card-title text-center mb-4">Register seller</h1>
+          <h1 class="card-title text-center mb-4">{{ object|yesno:"Update,Register" }} seller</h1>
           <form action="" method="post">
             {% csrf_token %}
             {{ form|crispy }}
-            <input type="submit" class="btn btn-success btn-block mt-3" value="Create">
+            <input type="submit" class="btn btn-success btn-block mt-3" value="{{ object|yesno:"Update,Create" }}">
           </form>
         </div>
       </div>
     </div>
   </div>
 </div>
+{% else %}
+  <p>No permissions to change</p>
+{% endif %}
 {% endblock %}

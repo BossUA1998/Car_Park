@@ -17,10 +17,8 @@
       </thead>
       <tbody>
       {% for car in car_list %}
-        <tr>
-          <td>
-            <a href="{% url 'cars:car-detail' pk=car.pk %}">{{ car.model }}</a>
-          </td>
+        <tr style="cursor: pointer" onclick="window.location='{% url 'cars:car-detail' pk=car.pk %}'">
+          <td>{{ car.model }}</td>
           <td>{{ car.year }}</td>
           <td>{{ car.mileage }}</td>
           <td>{{ car.price }}</td>

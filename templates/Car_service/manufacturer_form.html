@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  {% if user.is_superuser %}
+	<h1>{{ object|yesno:"Update,Add" }} manufacturer</h1>
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="{{ object|yesno:"Update,Add" }}">
+  </form>
+  {% else %}
+    <p>You no a permisions to {{ object|yesno:"update,create" }} manufacturer!</p>
+  {% endif %}
+{% endblock %}

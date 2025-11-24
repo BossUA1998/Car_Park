@@ -1,13 +1,13 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, PermissionDenied
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 from django.db.utils import IntegrityError
 
-from Car_service.forms import SellerCreateForm, CarCreateForm
+from Car_service.forms import SellerLicenseForm, CarCreateForm
 from Car_service.models import Car, Manufacturer, Seller
 
 
@@ -34,6 +34,13 @@ def index(request):
 
 
 # cars
+class CarsObjectValidatorMixin:
+    def form_valid(self, form):
+        if not self.request.user == self.object.owner.client:
+            raise PermissionDenied
+        return super().form_valid(form)
+
+
 class CarsListView(LoginRequiredMixin, generic.ListView):
     model = Car
     paginate_by = 5
@@ -50,10 +57,6 @@ class CarCreateView(LoginRequiredMixin, generic.CreateView):
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs["user"] = self.request.user
-        # try:
-        #     kwargs["seller"] = Seller.objects.get(client=self.request.user)
-        # except Seller.DoesNotExist:
-        #     kwargs["seller"] = None
         return kwargs
 
     def form_valid(self, form):
@@ -64,32 +67,63 @@ class CarCreateView(LoginRequiredMixin, generic.CreateView):
         return reverse("cars:car-detail", kwargs={"pk": self.object.pk})
 
 
+class CarUpdateView(LoginRequiredMixin, CarsObjectValidatorMixin, generic.UpdateView):
+    model = Car
+    fields = ["model", "year", "mileage", "price", "comment", "manufacturer"]
+
+    def get_success_url(self):
+        return reverse_lazy("cars:car-detail", kwargs={"pk": self.object.pk})
+
+
+class CarDeleteView(LoginRequiredMixin, CarsObjectValidatorMixin, generic.DeleteView):
+    model = Car
+    success_url = reverse_lazy("cars:car-list")
+
+
 # manufacturers
+class ImportantSuperuserValidatorMixin:
+    def form_valid(self, form):
+        if not self.request.user.is_superuser:
+            raise PermissionDenied
+        return super().form_valid(form)
+
+
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
     model = Manufacturer
     paginate_by = 5
 
 
-class ManufacturerCarsListView(LoginRequiredMixin, generic.ListView):
+class ManufacturerCarsListView(LoginRequiredMixin, generic.DetailView):
     model = Manufacturer
     paginate_by = 10
     template_name = "Car_service/manufacturer_cars.html"
-    context_object_name = "manufacturer_cars"
 
-    def get_context_data(
-            self, *, object_list=..., **kwargs
-    ):
-        context = super().get_context_data(**kwargs)
-        context["manufacturer"] = Manufacturer.objects.get(pk=self.kwargs["pk"])
-        return context
 
-    def get_queryset(self):
-        return Manufacturer.objects.get(
-            pk=self.kwargs.get('pk')
-        ).cars.all()
+class ManufacturerCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Manufacturer
+    fields = "__all__"
+    success_url = reverse_lazy("cars:manufacturer-list")
+
+
+class ManufacturerUpdateView(LoginRequiredMixin, ImportantSuperuserValidatorMixin, generic.UpdateView):
+    model = Manufacturer
+    fields = "__all__"
+    success_url = reverse_lazy("cars:manufacturer-list")
+
+
+class ManufacturerDeleteView(LoginRequiredMixin, ImportantSuperuserValidatorMixin, generic.DeleteView):
+    model = Manufacturer
+    success_url = reverse_lazy("cars:manufacturer-list")
 
 
 # sellers
+class SellerObjectValidatorMixin:
+    def form_valid(self, form):
+        if not self.request.user == self.object.client:
+            raise PermissionDenied
+        return super().form_valid(form)
+
+
 class SellerListView(LoginRequiredMixin, generic.ListView):
     model = Seller
     paginate_by = 5
@@ -110,24 +144,36 @@ class SellerDetailView(LoginRequiredMixin, generic.DetailView):
     model = Seller
 
 
-class SellerCreateView(LoginRequiredMixin, generic.CreateView):
-    model = Seller
-    form_class = SellerCreateForm
-    success_url = reverse_lazy("cars:seller-list")
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs["user"] = self.request.user
-        return kwargs
-
+class SellerFormMixin:
     def form_valid(self, form):
         self.request.user.is_seller = True
         self.request.user.save()
         form.instance.client = self.request.user
         return super().form_valid(form)
 
+    def get_success_url(self):
+        return reverse("cars:seller-detail", kwargs={"pk": self.object.pk})
 
-class SellerDeleteView(LoginRequiredMixin, generic.DeleteView):
+
+class SellerCreateView(LoginRequiredMixin, SellerFormMixin, generic.CreateView):
+    model = Seller
+    form_class = SellerLicenseForm
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def get_success_url(self):
+        return reverse_lazy("cars:seller-detail", kwargs={"pk": self.object.pk})
+
+
+class SellerUpdateView(LoginRequiredMixin, SellerObjectValidatorMixin, SellerFormMixin, generic.UpdateView):
+    model = Seller
+    form_class = SellerLicenseForm
+
+
+class SellerDeleteView(LoginRequiredMixin, SellerObjectValidatorMixin, generic.DeleteView):
     model = Seller
     success_url = reverse_lazy("cars:seller-list")
 

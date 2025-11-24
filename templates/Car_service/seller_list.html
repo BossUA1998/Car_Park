@@ -20,10 +20,8 @@
       </thead>
       <tbody>
       {% for seller in seller_list %}
-        <tr>
-          <td>
-            <a href="{% url "cars:seller-detail" pk=seller.pk %}">{{ seller.client.username }}</a>
-          </td>
+        <tr style="cursor: pointer" onclick="window.location='{% url 'cars:seller-detail' pk=seller.pk %}'">
+          <td>{{ seller.client.username }}</td>
           <td>{{ seller.seller_license }}</td>
           <td>{{ seller.license_expiration_date }}</td>
         </tr>

@@ -4,7 +4,7 @@ from datetime import datetime
 from Car_service.models import Seller, Car
 
 
-class SellerCreateForm(forms.ModelForm):
+class SellerLicenseForm(forms.ModelForm):
     class Meta:
         model = Seller
         fields = ["seller_license", "license_expiration_date"]

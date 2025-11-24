@@ -4,7 +4,7 @@ from django.conf import settings
 
 
 class Manufacturer(models.Model):
-    name = models.CharField(max_length=120)
+    name = models.CharField(max_length=120, unique=True)
     country = models.CharField(max_length=120)
 
     def __str__(self):

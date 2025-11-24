@@ -1,32 +1,41 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-4">
-  <div class="card">
-    <div class="card-header bg-info text-white">
-      <h1 class="h3 mb-0">{{ car.manufacturer }} {{ car.model }}</h1>
-    </div>
-    <div class="card-body">
-      <h2 class="card-title text-success font-weight-bold">
-        {{ car.price }} <small class="text-muted">dollars</small>
-      </h2>
+  <div class="container mt-4">
+    <div class="card">
+      <div class="card-header bg-info text-white">
+        <h1 class="h3 mb-0">{{ car.manufacturer }} {{ car.model }}</h1>
+      </div>
+      <div class="card-body">
+        <h2 class="card-title text-success font-weight-bold">
+          {{ car.price }} <small class="text-muted">dollars</small>
+        </h2>
 
-      <ul class="list-group list-group-flush mb-3">
-        <li class="list-group-item"><strong>Year:</strong> {{ car.year }}</li>
-        <li class="list-group-item"><strong>Mileage:</strong> {{ car.mileage }} km</li>
-      </ul>
+        <ul class="list-group list-group-flush mb-3">
+          <li class="list-group-item"><strong>Year:</strong> {{ car.year }}</li>
+          <li class="list-group-item"><strong>Mileage:</strong> {{ car.mileage }} km</li>
+          <li class="list-group-item"><strong>Seller:</strong> {{ car.owner.client.username }}</li>
+        </ul>
 
-      <div class="alert alert-light border">
-        <h5 class="alert-heading">Comment:</h5>
-        {% if car.comment %}
-          <p class="mb-0">{{ car.comment }}</p>
-        {% else %}
-          <p class="mb-0 text-muted font-italic">No comment provided</p>
+        <div class="alert alert-light border">
+          <h5 class="alert-heading">Comment:</h5>
+          {% if car.comment %}
+            <p class="mb-0">{{ car.comment }}</p>
+          {% else %}
+            <p class="mb-0 text-muted font-italic">No comment provided</p>
+          {% endif %}
+        </div>
+
+        <a href="javascript:history.back()" class="btn btn-outline-secondary mt-2">Back</a>
+        {% if car.owner.client == user %}
+          <a class="btn btn-outline-secondary mt-2" href="{% url 'cars:car-update' pk=car.pk %}">
+            Update information car
+          </a>
+          <a class="btn btn-outline-secondary mt-2" href="{% url 'cars:car-delete' pk=car.pk %}">
+            Delete car
+          </a>
         {% endif %}
       </div>
-
-      <a href="javascript:history.back()" class="btn btn-outline-secondary mt-2">Back</a>
     </div>
   </div>
-</div>
 {% endblock %}

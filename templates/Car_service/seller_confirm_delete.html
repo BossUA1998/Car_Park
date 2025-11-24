@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% if seller.client == user %}
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-8"> <div class="card border-danger shadow">
@@ -28,4 +29,7 @@
     </div>
   </div>
 </div>
+{% else %}
+  <p>No permission to delete</p>
+{% endif %}
 {% endblock %}
