@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ValidationError
@@ -6,7 +7,7 @@ from django.urls import reverse, reverse_lazy
 from django.views import generic
 from django.db.utils import IntegrityError
 
-from Car_service.forms import SellerCreateForm
+from Car_service.forms import SellerCreateForm, CarCreateForm
 from Car_service.models import Car, Manufacturer, Seller
 
 
@@ -42,6 +43,27 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
 
+class CarCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Car
+    form_class = CarCreateForm
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        # try:
+        #     kwargs["seller"] = Seller.objects.get(client=self.request.user)
+        # except Seller.DoesNotExist:
+        #     kwargs["seller"] = None
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.owner = Seller.objects.get(client=self.request.user)
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("cars:car-detail", kwargs={"pk": self.object.pk})
+
+
 # manufacturers
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
     model = Manufacturer
@@ -61,12 +83,10 @@ class ManufacturerCarsListView(LoginRequiredMixin, generic.ListView):
         context["manufacturer"] = Manufacturer.objects.get(pk=self.kwargs["pk"])
         return context
 
-
     def get_queryset(self):
         return Manufacturer.objects.get(
             pk=self.kwargs.get('pk')
         ).cars.all()
-
 
 
 # sellers
@@ -75,10 +95,14 @@ class SellerListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 5
 
     def get_context_data(
-        self, *, object_list = ..., **kwargs
+            self, *, object_list=..., **kwargs
     ):
         context = super().get_context_data(**kwargs)
         context["seller_user"] = Seller.objects.filter(client=self.request.user).exists()
+        try:
+            context["seller"] = Seller.objects.get(client=self.request.user)
+        except Seller.DoesNotExist:
+            context["seller"] = None
         return context
 
 
@@ -97,13 +121,17 @@ class SellerCreateView(LoginRequiredMixin, generic.CreateView):
         return kwargs
 
     def form_valid(self, form):
-        try:
-            form.instance.client = self.request.user
-        except IntegrityError:
-            raise ValidationError("This manufacturer is already registered")
+        self.request.user.is_seller = True
+        self.request.user.save()
+        form.instance.client = self.request.user
         return super().form_valid(form)
 
 
 class SellerDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Seller
     success_url = reverse_lazy("cars:seller-list")
+
+    def post(self, request, *args, **kwargs):
+        request.user.is_seller = False
+        request.user.save()
+        return super().post(request, *args, **kwargs)

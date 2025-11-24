@@ -1,13 +1,19 @@
 from django import forms
 from django.core.exceptions import ValidationError
-
-from Car_service.models import Seller
+from datetime import datetime
+from Car_service.models import Seller, Car
 
 
 class SellerCreateForm(forms.ModelForm):
     class Meta:
         model = Seller
         fields = ["seller_license", "license_expiration_date"]
+        widgets = {
+            "license_expiration_date": forms.DateInput(
+                attrs={"type": "date"},
+                format="%Y-%m-%d",
+            ),
+        }
 
     def __init__(self, user=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -17,13 +23,13 @@ class SellerCreateForm(forms.ModelForm):
         license_value = self.cleaned_data.get("seller_license")
         if license_value:
             if len(license_value) != 8:
-                raise ValidationError("License must be 8 characters long")
+                raise ValidationError("License must be 8 characters long.")
             elif not license_value[:3].isalpha():
-                raise ValidationError("License must start with a letter")
+                raise ValidationError("License must start with a letter.")
             elif not license_value[:3].isupper():
-                raise ValidationError("License must start with uppercase")
+                raise ValidationError("License must start with uppercase.")
             elif not license_value[3:].isdigit():
-                raise ValidationError("License must contain with digit")
+                raise ValidationError("License must contain with digit.")
 
             qs_license = Seller.objects.filter(seller_license=license_value)
 
@@ -31,7 +37,7 @@ class SellerCreateForm(forms.ModelForm):
                 qs_license = qs_license.exclude(pk=self.instance.pk)
 
             if qs_license.exists():
-                raise ValidationError("License is already registered")
+                raise ValidationError("License is already registered.")
 
         return license_value
 
@@ -46,7 +52,28 @@ class SellerCreateForm(forms.ModelForm):
 
             if qs_client.exists():
                 raise ValidationError(
-                    "You are already registered"
+                    "You are already registered."
                 )
+
+        return self.cleaned_data
+
+
+class CarCreateForm(forms.ModelForm):
+    class Meta:
+        model = Car
+        fields = ["model", "year", "mileage", "price", "comment", "manufacturer"]
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+
+    def clean(self):
+        super().clean()
+
+        if not self.user.is_seller:
+            raise ValidationError("You are not a seller.")
+
+        if Seller.objects.get(client=self.user).license_expiration_date < datetime.now().date():
+            raise ValidationError("Your license has expired.")
 
         return self.cleaned_data
