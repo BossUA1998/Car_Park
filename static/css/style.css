@@ -198,8 +198,9 @@ body {
     top: 0;
     height: 100%;
     padding-top: .5rem;
-    overflow-x: hidden;
-    overflow-y: auto;
+    /*overflow-x: hidden;*/
+    /*overflow-y: hidden;*/
+    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
