@@ -84,14 +84,7 @@ class CarCreateView(LoginRequiredMixin, generic.CreateView):
 
 class CarUpdateView(LoginRequiredMixin, CarsObjectValidatorMixin, generic.UpdateView):
     model = Car
-    fields = [
-        "model",
-        "year",
-        "mileage",
-        "price",
-        "comment",
-        "manufacturer"
-    ]
+    fields = ["model", "year", "mileage", "price", "comment", "manufacturer"]
 
     def get_success_url(self):
         return reverse_lazy("cars:car-detail", kwargs={"pk": self.object.pk})
@@ -152,7 +145,9 @@ class ManufacturerCarsListView(LoginRequiredMixin, generic.ListView):
         return self.queryset
 
 
-class ManufacturerCreateView(LoginRequiredMixin, ImportantSuperuserValidatorMixin, generic.CreateView):
+class ManufacturerCreateView(
+    LoginRequiredMixin, ImportantSuperuserValidatorMixin, generic.CreateView
+):
     model = Manufacturer
     fields = "__all__"
     success_url = reverse_lazy("cars:manufacturer-list")
