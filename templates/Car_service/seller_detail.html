@@ -6,31 +6,33 @@
     <div class="glass-card p-4 mb-5">
       <div class="d-flex justify-content-between align-items-start">
         <div class="d-flex align-items-center">
-            <div class="me-4 d-none d-md-block">
-                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; background: linear-gradient(45deg, #e14eca, #ba54f5);">
-                    <i class="fas fa-user fa-2x text-white"></i>
-                </div>
+          <div class="me-4 d-none d-md-block">
+            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                 style="width: 80px; height: 80px; background: linear-gradient(45deg, #e14eca, #ba54f5);">
+              <i class="fas fa-user fa-2x text-white"></i>
             </div>
-            <div>
-                <h1 class="display-5 text-white fw-bold mb-1 text-break">{{ seller.client.username }}</h1>
-                <div class="d-flex align-items-center mt-2">
-                   <span class="text-white-50 me-2">License ID:</span>
-                   <span class="badge rounded-pill border border-light text-white fw-light px-3 py-2" style="background: rgba(255,255,255,0.1); letter-spacing: 1px;">
+          </div>
+          <div>
+            <h1 class="display-5 text-white fw-bold mb-1 text-break">{{ seller.client.username }}</h1>
+            <div class="d-flex align-items-center mt-2">
+              <span class="text-white-50 me-2">License ID:</span>
+              <span class="badge rounded-pill border border-light text-white fw-light px-3 py-2"
+                    style="background: rgba(255,255,255,0.1); letter-spacing: 1px;">
                        {{ seller.seller_license }}
                    </span>
-                </div>
             </div>
+          </div>
         </div>
 
         {% if seller.client == user %}
-        <div class="d-flex flex-column gap-2">
-          <a href="{% url 'cars:seller-update' pk=seller.pk %}" class="btn btn-outline-info btn-sm rounded-pill">
-            <i class="fas fa-user-edit me-2"></i>Edit Profile
-          </a>
-          <a href="{% url 'cars:seller-delete' pk=seller.pk %}" class="btn btn-outline-danger btn-sm rounded-pill">
-            <i class="fas fa-user-times me-2"></i>Delete Profile
-          </a>
-        </div>
+          <div class="d-flex flex-column gap-2">
+            <a href="{% url 'cars:seller-update' pk=seller.pk %}" class="btn btn-outline-info btn-sm rounded-pill">
+              <i class="fas fa-user-edit me-2"></i>Edit Profile
+            </a>
+            <a href="{% url 'cars:seller-delete' pk=seller.pk %}" class="btn btn-outline-danger btn-sm rounded-pill">
+              <i class="fas fa-user-times me-2"></i>Delete Profile
+            </a>
+          </div>
         {% endif %}
       </div>
     </div>
@@ -39,7 +41,7 @@
       <h3 class="h4 text-white fw-bold border-start border-4 border-primary ps-3 mb-0">Current Inventory</h3>
       {% if seller.client == user %}
         <a href="{% url 'cars:car-create' %}" class="btn btn-primary rounded-pill px-4 shadow-lg">
-            <i class="fas fa-plus me-2"></i>Add New Car
+          <i class="fas fa-plus me-2"></i>Add New Car
         </a>
       {% endif %}
     </div>
@@ -60,21 +62,21 @@
             <tr style="cursor: pointer;" onclick="window.location='{% url 'cars:car-detail' pk=car.pk %}'">
               <td class="align-middle ps-4 text-white-50">{{ car.manufacturer.name }}</td>
               <td class="align-middle">
-                  <span>{{ car.model }}</span>
+                <span>{{ car.model }}</span>
               </td>
               <td class="align-middle">
-                  <span>{{ car.year }}</span>
+                <span class="fw-bold">{{ car.year }}</span>
               </td>
               <td class="align-middle text-white">
-                  <i class="fas fa-tachometer-alt me-2 text-white-50"></i>{{ car.mileage }} km
+                <i class="fas fa-tachometer-alt me-2 text-white-50"></i>{{ car.mileage }} km
               </td>
             </tr>
           {% empty %}
             <tr>
-               <td colspan="4" class="text-center py-5 text-white-50">
-                   <i class="fas fa-box-open fa-3x mb-3 opacity-25"></i><br>
-                   No inventory listed yet.
-               </td>
+              <td colspan="4" class="text-center py-5 text-white-50">
+                <i class="fas fa-box-open fa-3x mb-3 opacity-25"></i><br>
+                No inventory listed yet.
+              </td>
             </tr>
           {% endfor %}
           </tbody>

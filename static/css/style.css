@@ -19,7 +19,6 @@ body {
     min-height: 100vh;
 }
 
-/* --- Фон з рухомими елементами --- */
 .background-shapes {
     position: fixed;
     top: 0;
@@ -33,7 +32,7 @@ body {
 
 .shape {
     position: absolute;
-    filter: blur(60px); /* Більше розмиття для м'якості */
+    filter: blur(60px);
     opacity: 0.5;
     border-radius: 50%;
     will-change: transform;
@@ -102,7 +101,6 @@ body {
     }
 }
 
-/* --- Glassmorphism Base Classes --- */
 .glass-effect {
     background: var(--card-bg);
     border: 1px solid var(--border-light) !important;
@@ -111,15 +109,12 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* Стилізація карток */
 .card {
-    background: var(--card-bg); /* Fallback */
+    background: var(--card-bg);
     border-radius: 15px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Додаємо клас .glass-effect до .card через @extend неможливо в чистому CSS, тому дублюємо властивості або додаємо клас в HTML.
-   Тут залишаємо як є для сумісності, але додаємо backdrop-filter */
 .card {
     background: rgba(39, 41, 61, 0.8);
     border: 1px solid var(--border-light) !important;
@@ -145,7 +140,6 @@ body {
     font-weight: 700;
 }
 
-/* --- Missing Class Fix: .glass-panel (used in base.html) --- */
 .glass-panel {
     background: rgba(39, 41, 61, 0.6);
     backdrop-filter: blur(12px);
@@ -155,7 +149,6 @@ body {
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
 }
 
-/* --- Кнопки --- */
 .btn {
     border-radius: 30px;
     border: none;
@@ -165,7 +158,7 @@ body {
 }
 
 .btn-primary, .btn-success, .btn-info {
-    background: var(--primary-gradient) !important; /* Примусовий градієнт */
+    background: var(--primary-gradient) !important;
     border: none !important;
     color: white !important;
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -175,7 +168,7 @@ body {
 }
 
 .btn:hover {
-    filter: brightness(0.85); /* Затемнює кнопку на 15% */
+    filter: brightness(0.85);
     transform: translateY(-2px);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
 }
@@ -186,19 +179,18 @@ body {
     color: white;
 }
 
-/* --- Sidebar --- */
 .sidebar {
     background: rgba(30, 30, 47, 0.7);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border-right: 1px solid var(--border-light);
-    height: 100vh; /* Фіксована висота вьюпорта */
-    position: fixed; /* Фіксуємо сайдбар */
+    height: 100vh;
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     z-index: 100;
-    padding: 0; /* Прибираємо паддінги самого блоку */
+    padding: 0;
 }
 
 .sidebar-sticky {
@@ -207,20 +199,20 @@ body {
     height: 100%;
     padding-top: .5rem;
     overflow-x: hidden;
-    overflow-y: auto; /* Скрол якщо контент не влазить */
-    display: flex; /* Flexbox для позиціонування */
-    flex-direction: column; /* Вертикальна колонка */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .custom-nav {
-    flex-grow: 1; /* Розтягуємо навігацію, щоб заповнити простір */
+    flex-grow: 1;
 }
 
 .custom-nav .nav-link {
     color: var(--text-muted);
     padding: 15px 20px;
-    margin: 5px 15px; /* Відступи з боків */
-    border-radius: 12px; /* Трохи менше заокруглення для строгості */
+    margin: 5px 15px;
+    border-radius: 12px;
     transition: all 0.3s ease;
     font-weight: 500;
     display: flex;
@@ -228,7 +220,7 @@ body {
 }
 
 .custom-nav .nav-link i {
-    width: 25px; /* Фіксуємо ширину іконок для вирівнювання */
+    width: 25px;
     text-align: center;
 }
 
@@ -244,12 +236,12 @@ body {
     box-shadow: 0 4px 15px rgba(225, 78, 202, 0.3);
 }
 
-/* --- Search Form Custom Styles --- */
+
 .custom-search .form-control {
-    background: rgba(20, 20, 30, 0.6) !important; /* Темніший фон */
+    background: rgba(20, 20, 30, 0.6) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    border-radius: 12px !important; /* Квадратна форма із заокругленням */
-    height: 50px; /* Високі поля */
+    border-radius: 12px !important;
+    height: 50px;
     color: white !important;
     padding-left: 20px;
 }
@@ -261,12 +253,12 @@ body {
 }
 
 .btn-search-dark {
-    background: rgba(18, 18, 28, 0.8); /* Темний фон */
+    background: rgba(18, 18, 28, 0.8);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.7);
-    border-radius: 12px; /* Таке ж заокруглення як у інпута */
+    border-radius: 12px;
     height: 50px;
-    width: 50px; /* Квадратна кнопка */
+    width: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -274,14 +266,13 @@ body {
 }
 
 .btn-search-dark:hover {
-    background: #ba54f5; /* Фіолетовий при наведенні */
+    background: #ba54f5;
     color: white;
     border-color: #ba54f5;
     box-shadow: 0 0 15px rgba(186, 84, 245, 0.4);
     transform: translateY(-2px);
 }
 
-/* --- Pagination --- */
 .custom-pagination .page-item .page-link {
     background: transparent;
     border: none;
@@ -315,8 +306,6 @@ body {
     color: rgba(255, 255, 255, 0.2);
 }
 
-/* --- Forms --- */
-/* Оптимізовано: Об'єднані стилі для .form-control */
 .form-control, select.form-control {
     background: rgba(29, 37, 59, 0.8) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -338,7 +327,6 @@ label {
     margin-bottom: 5px;
 }
 
-/* --- Animations --- */
 .slide-up-fade {
     animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -355,13 +343,13 @@ label {
 }
 
 .glass-card {
-    background: rgba(39, 41, 61, 0.7); /* Більш прозорий фон */
-    backdrop-filter: blur(20px); /* Сильніше розмиття */
+    background: rgba(39, 41, 61, 0.7);
+    backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    overflow: hidden; /* Щоб діти не вилазили за радіус */
+    overflow: hidden;
 }
 
 .glass-mini-card {
@@ -388,7 +376,7 @@ label {
 }
 
 .animate-entry {
-    opacity: 0; /* Спочатку невидимий */
+    opacity: 0;
     animation: fadeInUpStagger 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
@@ -408,20 +396,16 @@ label {
     animation-delay: 0.4s;
 }
 
-/* --- Glass Tables Customization --- */
-
-/* Прозора таблиця */
 .table-responsive {
-    overflow-x: hidden; /* Приховує горизонтальний скрол */
+    overflow-x: hidden;
 }
 
 .custom-table {
-    color: rgba(255, 255, 255, 0.85); /* Базовий колір тексту світліший */
+    color: rgba(255, 255, 255, 0.85);
     margin-bottom: 0;
     vertical-align: middle;
 }
 
-/* Стиль заголовка таблиці */
 .custom-table thead th {
     background-color: rgba(0, 0, 0, 0.2);
     color: #ba54f5;
@@ -433,17 +417,15 @@ label {
     padding: 15px;
 }
 
-/* Стиль комірок */
 .custom-table td {
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     padding: 15px;
     vertical-align: middle;
 }
 
-/* Ефект наведення на рядок (Glow Effect) */
 .custom-table tbody tr {
-    background-color: #ffffff !important;  /* Явно задаємо білий фон */
-    color: #2c2c2c !important;             /* Темний колір тексту */
+    background-color: #ffffff !important;
+    color: #2c2c2c !important;
     transition: all 0.3s ease;
 }
 
@@ -452,11 +434,11 @@ label {
 .custom-table tbody tr .hover-bright,
 .custom-table tbody tr .text-muted {
     color: #2c2c2c !important;
-    text-shadow: none; /* Прибираємо світіння, поки миша не наведена */
+    text-shadow: none;
 }
 
 .custom-table tbody tr:hover {
-    background-color: rgba(255, 255, 255, 0.1) !important; /* Напівпрозорий фон */
+    background-color: rgba(255, 255, 255, 0.1) !important;
     transform: scale(1.01);
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -471,21 +453,21 @@ label {
 }
 
 .hover-bright {
-    color: rgba(255, 255, 255, 0.3); /* Тьмяний сірий у спокої */
+    color: rgba(255, 255, 255, 0.3);
     font-weight: 600;
     transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
 .price-tag {
-    color: #00ff88; /* Кислотно-зелений */
+    color: #00ff88;
     font-weight: 700;
     font-size: 1.15rem;
-    text-shadow: 0 0 8px rgba(0, 255, 136, 0.3); /* Легке світіння */
+    text-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
     letter-spacing: 0.5px;
 }
 
 .year-badge {
-    background: rgba(255, 255, 255, 0.15); /* Напівпрозорий світлий фон */
+    background: rgba(255, 255, 255, 0.15);
     color: #ffffff;
     border: 1px solid rgba(255, 255, 255, 0.3);
     padding: 5px 12px;
@@ -499,7 +481,6 @@ label {
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
 }
 
-/* Прибираємо стандартний білий фон striped */
 .table-striped > tbody > tr:nth-of-type(odd) > * {
     background-color: transparent;
     color: inherit;

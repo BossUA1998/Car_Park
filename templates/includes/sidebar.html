@@ -10,7 +10,8 @@
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link {% if 'cars' in request.path and 'manufacturers' not in request.path and 'sellers' not in request.path %}active{% endif %}" href="{% url 'cars:car-list' %}">
+    <a class="nav-link {% if 'cars' in request.path and 'manufacturers' not in request.path and 'sellers' not in request.path %}active{% endif %}"
+       href="{% url 'cars:car-list' %}">
       <i class="fas fa-car me-2"></i> Cars
     </a>
   </li>
@@ -42,10 +43,10 @@
     </div>
   {% else %}
     <div class="p-3 rounded glass-mini-card text-center slide-up-fade">
-        <p class="text-muted small mb-2">Welcome Guest!</p>
-        <a href="{% url 'login' %}" class="btn btn-sm btn-primary w-100 rounded-pill">
-            <i class="fas fa-sign-in-alt me-1"></i> Login
-        </a>
+      <p class="text-muted small mb-2">Welcome Guest!</p>
+      <a href="{% url 'login' %}" class="btn btn-sm btn-primary w-100 rounded-pill">
+        <i class="fas fa-sign-in-alt me-1"></i> Login
+      </a>
     </div>
   {% endif %}
 </div>

@@ -1,76 +1,78 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="animate-entry delay-1">
-  <div class="row mb-4 align-items-end">
-    <div class="col-md-8">
-      <h1 class="h2 text-white fw-bold mb-3">Cars for Sale</h1>
+  <div class="animate-entry delay-1">
+    <div class="row mb-4 align-items-end">
+      <div class="col-md-8">
+        <h1 class="h2 text-white fw-bold mb-3">Cars for Sale</h1>
 
-      <div class="mb-3" style="max-width: 500px;">
+        <div class="mb-3" style="max-width: 500px;">
           {% include "includes/search_form.html" %}
+        </div>
+
+        <h2 class="h5 mt-3 text-white-50">
+          Manufacturer: <span class="text-white fw-bold fs-4 ms-2"
+                              style="text-shadow: 0 0 10px rgba(255,255,255,0.3);">{{ manufacturer.name }}</span>
+        </h2>
       </div>
 
-      <h2 class="h5 mt-3 text-white-50">
-          Manufacturer: <span class="text-white fw-bold fs-4 ms-2" style="text-shadow: 0 0 10px rgba(255,255,255,0.3);">{{ manufacturer.name }}</span>
-      </h2>
-    </div>
-
-    <div class="col-md-4 text-md-end">
-      {% if user.is_superuser %}
-      <div class="btn-group shadow-sm" role="group">
-        <a href="{% url 'cars:manufacturer-update' pk=manufacturer.pk %}" class="btn btn-outline-light btn-sm px-3">
-          <i class="fas fa-cog me-2"></i>Update
-        </a>
-        <a href="{% url 'cars:manufacturer-delete' pk=manufacturer.pk %}" class="btn btn-outline-danger btn-sm px-3">
-          <i class="fas fa-trash me-2"></i>Delete
-        </a>
+      <div class="col-md-4 text-md-end">
+        {% if user.is_superuser %}
+          <div class="btn-group shadow-sm" role="group">
+            <a href="{% url 'cars:manufacturer-update' pk=manufacturer.pk %}" class="btn btn-outline-light btn-sm px-3">
+              <i class="fas fa-cog me-2"></i>Update
+            </a>
+            <a href="{% url 'cars:manufacturer-delete' pk=manufacturer.pk %}"
+               class="btn btn-outline-danger btn-sm px-3">
+              <i class="fas fa-trash me-2"></i>Delete
+            </a>
+          </div>
+        {% endif %}
       </div>
-      {% endif %}
-    </div>
-  </div>
-
-  <div class="glass-card p-0 mt-4 animate-entry delay-2">
-    <div class="card-header border-bottom border-light p-3" style="background: rgba(255,255,255,0.05);">
-      <h5 class="mb-0 text-white"><i class="fas fa-list me-2 text-white-50"></i>Available Models</h5>
     </div>
 
-    <div class="table-responsive">
-      <table class="table custom-table table-hover mb-0">
-        <thead>
+    <div class="glass-card p-0 mt-4 animate-entry delay-2">
+      <div class="card-header border-bottom border-light p-3" style="background: rgba(255,255,255,0.05);">
+        <h5 class="mb-0 text-white"><i class="fas fa-list me-2 text-white-50"></i>Available Models</h5>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table custom-table table-hover mb-0">
+          <thead>
           <tr>
             <th class="border-top-0 ps-4">Model</th>
             <th class="border-top-0">Year</th>
             <th class="border-top-0">Mileage</th>
             <th class="border-top-0 text-end pe-4">Price</th>
           </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
           {% for car in manufacturer_cars %}
             <tr style="cursor: pointer;" onclick="window.location='{% url 'cars:car-detail' pk=car.pk %}'">
               <td class="align-middle ps-4">
-                  <span class="fw-bold fs-5">{{ car.model }}</span>
+                <span class="fw-bold fs-5">{{ car.model }}</span>
               </td>
               <td class="align-middle">
-                  <span class="fw-bold">{{ car.year }}</span>
+                <span class="fw-bold">{{ car.year }}</span>
               </td>
               <td class="align-middle">
-                  <i class="fas fa-road me-2 opacity-50"></i>{{ car.mileage }} km
+                <i class="fas fa-road me-2 opacity-50"></i>{{ car.mileage }} km
               </td>
               <td class="align-middle text-end pe-4">
-                  <span class="price-tag">{{ car.price }} $</span>
+                <span class="price-tag">{{ car.price }} $</span>
               </td>
             </tr>
           {% empty %}
             <tr>
               <td colspan="4" class="text-center py-5 text-muted">
-                  <i class="fas fa-car-crash fa-3x mb-3 opacity-25"></i><br>
-                  No cars currently listed for this manufacturer.
+                <i class="fas fa-car-crash fa-3x mb-3 opacity-25"></i><br>
+                No cars currently listed for this manufacturer.
               </td>
             </tr>
           {% endfor %}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
 {% endblock %}

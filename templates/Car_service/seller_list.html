@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="animate-entry delay-1">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h2 text-white fw-bold">Sellers List</h1>
+  <div class="animate-entry delay-1">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="h2 text-white fw-bold">Sellers List</h1>
 
-    <div class="d-flex align-items-center gap-3">
+      <div class="d-flex align-items-center gap-3">
         {% include "includes/search_form.html" %}
 
         {% if not seller_user %}
@@ -17,44 +17,44 @@
             <i class="fas fa-id-card me-2"></i>My Profile
           </a>
         {% endif %}
+      </div>
     </div>
-  </div>
 
-  <div class="glass-card p-0 overflow-hidden">
-    <div class="table-responsive">
-      <table class="table custom-table table-hover mb-0">
-        <thead>
+    <div class="glass-card p-0 overflow-hidden">
+      <div class="table-responsive">
+        <table class="table custom-table table-hover mb-0">
+          <thead>
           <tr>
             <th class="border-top-0 ps-4">Seller</th>
             <th class="border-top-0">License</th>
             <th class="border-top-0">Expiration Date</th>
           </tr>
-        </thead>
-        <tbody>
-        {% for seller in seller_list %}
-          <tr onclick="window.location='{% url 'cars:seller-detail' pk=seller.pk %}'">
-            <td class="align-middle font-weight-bold ps-4">
+          </thead>
+          <tbody>
+          {% for seller in seller_list %}
+            <tr onclick="window.location='{% url 'cars:seller-detail' pk=seller.pk %}'">
+              <td class="align-middle font-weight-bold ps-4">
                 <i class="fas fa-user-circle me-2 text-muted"></i>
                 {{ seller.client.username }}
-            </td>
-            <td class="align-middle">
+              </td>
+              <td class="align-middle">
                 <span class="badge rounded-pill bg-dark border border-secondary text-light px-3 py-2">
                     {{ seller.seller_license }}
                 </span>
-            </td>
-            <td class="align-middle text-muted">{{ seller.license_expiration_date }}</td>
-          </tr>
-        {% empty %}
-          <tr>
-            <td colspan="3" class="text-center py-5 text-muted">
+              </td>
+              <td class="align-middle text-muted">{{ seller.license_expiration_date }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="3" class="text-center py-5 text-muted">
                 <i class="fas fa-users-slash fa-3x mb-3 opacity-50"></i><br>
                 No sellers available
-            </td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
 {% endblock %}
