@@ -1,27 +1,42 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-5">
+<div class="container mt-5 animate-entry delay-1">
   <div class="row justify-content-center">
     <div class="col-md-6">
-      <div class="card border-danger shadow">
-        <div class="card-header bg-danger text-white">
-          <h4 class="mb-0">Confirm Delete</h4>
-        </div>
-        <div class="card-body text-center">
-          {% if user.is_superuser %}
-            <p class="lead">Are you sure you want to delete the manufacturer <strong>{{ object.name }}</strong>?</p>
-            <p class="text-muted small">This action cannot be undone and may delete associated cars.</p>
+      <div class="glass-card p-5 text-center position-relative overflow-hidden">
 
-            <form action="" method="post" class="mt-4">
-              {% csrf_token %}
-              <input type="submit" class="btn btn-danger px-4" value="Yes, Delete">
-              <a href="{% url 'cars:manufacturer-list' %}" class="btn btn-secondary px-4">Cancel</a>
-            </form>
-          {% else %}
-            <div class="alert alert-warning">No permissions to delete.</div>
-          {% endif %}
+        <div style="position: absolute; top: -20px; right: -20px; opacity: 0.1;">
+            <i class="fas fa-trash fa-8x text-danger"></i>
         </div>
+
+        {% if user.is_superuser %}
+            <div class="mb-4">
+                <div class="rounded-circle bg-danger bg-opacity-10 d-inline-flex p-4 mb-3">
+                    <i class="fas fa-industry fa-3x text-danger"></i>
+                </div>
+                <h3 class="text-white fw-bold">Delete Manufacturer</h3>
+            </div>
+
+            <p class="text-white-50 lead mb-2">Are you sure you want to delete:</p>
+            <h2 class="text-white fw-bold mb-4">{{ object.name }}</h2>
+
+            <p class="text-white-50 small mb-4">This action cannot be undone and may affect associated cars in the database.</p>
+
+            <form action="" method="post" class="d-flex justify-content-center gap-3">
+              {% csrf_token %}
+              <a href="{% url 'cars:manufacturer-list' %}" class="btn btn-outline-light rounded-pill px-4">
+                  Cancel
+              </a>
+              <input type="submit" class="btn btn-outline-danger rounded-pill px-4" value="Confirm Delete">
+            </form>
+        {% else %}
+            <div class="text-center">
+                <i class="fas fa-ban fa-3x text-danger mb-3"></i>
+                <h4 class="text-white">Access Denied</h4>
+                <p class="text-white-50">No permissions to delete manufacturers.</p>
+            </div>
+        {% endif %}
       </div>
     </div>
   </div>

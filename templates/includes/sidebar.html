@@ -1,32 +1,51 @@
-{% if user.is_authenticated %}
-  <div class="card mb-3">
-    <div class="card-body p-2">
-      <div class="text-muted small">
-        {% if user.is_seller %}
-          Seller:
-        {% else %}
-          User:
-        {% endif %}
-      </div>
-      <strong>{{ user.username }}</strong>
-      <form action="{% url 'logout' %}" method="post" class="mt-2">
+<div class="text-center mb-4 mt-3">
+  <h3 class="text-white fw-bold">CarPark<span style="color: #ba54f5;">App</span></h3>
+</div>
+
+<ul class="nav flex-column custom-nav">
+  <li class="nav-item">
+    <a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}"
+       href="{% url 'cars:index' %}">
+      <i class="fas fa-home me-2"></i> Home
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if 'cars' in request.path and 'manufacturers' not in request.path and 'sellers' not in request.path %}active{% endif %}" href="{% url 'cars:car-list' %}">
+      <i class="fas fa-car me-2"></i> Cars
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if 'seller' in request.path %}active{% endif %}" href="{% url 'cars:seller-list' %}">
+      <i class="fas fa-user-tie me-2"></i> Sellers
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if 'manufacturers' in request.path %}active{% endif %}"
+       href="{% url 'cars:manufacturer-list' %}">
+      <i class="fas fa-industry me-2"></i> Manufacturers
+    </a>
+  </li>
+</ul>
+
+<div class="mt-auto px-3 pb-4">
+  {% if user.is_authenticated %}
+    <div class="p-3 rounded glass-mini-card text-center slide-up-fade">
+      <small class="d-block mb-1" style="color: rgba(255,255,255,0.6);">Logged in as:</small>
+      <span class="text-white fw-bold fs-5">{{ user.username }}</span>
+
+      <form action="{% url 'logout' %}" method="post">
         {% csrf_token %}
-        <button type="submit" class="btn btn-outline-danger btn-sm btn-block">Logout</button>
+        <button class="btn btn-sm btn-outline-danger mt-3 w-100 rounded-pill" type="submit">
+          <i class="fas fa-sign-out-alt me-1"></i> Logout
+        </button>
       </form>
     </div>
-  </div>
-{% else %}
-  <div class="mb-3">
-    <a href="{% url 'login' %}" class="btn btn-primary btn-block">Login</a>
-  </div>
-{% endif %}
-
-<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-  <span>Navigation</span>
-</h6>
-<div class="list-group list-group-flush">
-  <a href="{% url 'cars:index' %}" class="list-group-item list-group-item-action bg-light">Home</a>
-  <a href="{% url 'cars:car-list' %}" class="list-group-item list-group-item-action bg-light">Cars</a>
-  <a href="{% url 'cars:manufacturer-list' %}" class="list-group-item list-group-item-action bg-light">Manufacturers</a>
-  <a href="{% url 'cars:seller-list' %}" class="list-group-item list-group-item-action bg-light">Sellers</a>
+  {% else %}
+    <div class="p-3 rounded glass-mini-card text-center slide-up-fade">
+        <p class="text-muted small mb-2">Welcome Guest!</p>
+        <a href="{% url 'login' %}" class="btn btn-sm btn-primary w-100 rounded-pill">
+            <i class="fas fa-sign-in-alt me-1"></i> Login
+        </a>
+    </div>
+  {% endif %}
 </div>
