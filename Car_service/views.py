@@ -84,7 +84,14 @@ class CarCreateView(LoginRequiredMixin, generic.CreateView):
 
 class CarUpdateView(LoginRequiredMixin, CarsObjectValidatorMixin, generic.UpdateView):
     model = Car
-    fields = ["model", "year", "mileage", "price", "comment", "manufacturer"]
+    fields = [
+        "model",
+        "year",
+        "mileage",
+        "price",
+        "comment",
+        "manufacturer"
+    ]
 
     def get_success_url(self):
         return reverse_lazy("cars:car-detail", kwargs={"pk": self.object.pk})
@@ -121,12 +128,6 @@ class ManufacturerListView(LoginRequiredMixin, generic.ListView):
         return self.queryset
 
 
-# class ManufacturerCarsListView(LoginRequiredMixin, generic.DetailView):
-#     model = Manufacturer
-#     paginate_by = 5
-#     template_name = "Car_service/manufacturer_cars.html"
-
-
 class ManufacturerCarsListView(LoginRequiredMixin, generic.ListView):
     model = Manufacturer
     paginate_by = 5
@@ -151,7 +152,7 @@ class ManufacturerCarsListView(LoginRequiredMixin, generic.ListView):
         return self.queryset
 
 
-class ManufacturerCreateView(LoginRequiredMixin, generic.CreateView):
+class ManufacturerCreateView(LoginRequiredMixin, ImportantSuperuserValidatorMixin, generic.CreateView):
     model = Manufacturer
     fields = "__all__"
     success_url = reverse_lazy("cars:manufacturer-list")
