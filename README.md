@@ -38,3 +38,42 @@
 * **Ліцензія:** Має починатися з 3 великих літер і закінчуватися 5 цифрами (наприклад, `AAA12345`).
 * **Лічильник відвідувань:** Використовує сесії (`request.session`) для підрахунку візитів на головну сторінку.
 * **Заборона змінювати об'єкти:** На рівнях backend та frontend заборона змінювати об'єкти які не належать профілю
+
+**Клонуйте репозиторій:**
+```bash
+git clone https://github.com/BossUA1998/Car_Park
+cd Car_Park
+```
+
+**Створіть віртуальне оточення:**
+```bash
+python -m venv venv
+```
+
+```bash
+source venv/bin/activate # macOS/Linux
+```
+
+```bash
+venv\Scripts\activate # Windows
+```
+
+**Встановіть залежності:**
+```bash
+pip install -r requirements.txt
+```
+
+**Запустіть міграції:**
+```bash
+python manage.py migrate
+```
+
+**Створіть суперюзера (для доступу до виробників):**
+```bash
+python manage.py createsuperuser
+```
+
+**Запустіть сервер:**
+```bash
+python manage.py runserver
+```
