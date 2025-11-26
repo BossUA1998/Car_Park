@@ -39,6 +39,9 @@
 * **Лічильник відвідувань:** Використовує сесії (`request.session`) для підрахунку візитів на головну сторінку.
 * **Заборона змінювати об'єкти:** На рівнях backend та frontend заборона змінювати об'єкти які не належать профілю
 
+Домашня сторінка:
+<img width="1919" height="956" alt="image" src="https://github.com/user-attachments/assets/172df908-34ce-4b97-9cbe-a89474b20bd8" />
+
 **Клонуйте репозиторій:**
 ```bash
 git clone https://github.com/BossUA1998/Car_Park
