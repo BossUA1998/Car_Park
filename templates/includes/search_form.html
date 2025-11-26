@@ -1,0 +1,14 @@
+{% load crispy_forms_filters %}
+
+<div class="custom-search">
+  <form action="" method="get" novalidate class="d-flex align-items-end gap-2">
+    <div class="flex-grow-1">
+      {{ search_form|crispy }}
+    </div>
+    <div class="form-group mb-3">
+      <button type="submit" class="btn btn-search-dark" title="Search">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+  </form>
+</div>

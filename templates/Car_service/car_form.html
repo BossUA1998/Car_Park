@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <div class="row justify-content-center animate-entry delay-2">
+    <div class="col-md-8 col-lg-6">
+      <div class="glass-card p-5">
+
+        {% if not object or car.owner.client == user %}
+          <div class="text-center mb-4">
+            <i class="fas fa-car fa-3x text-white mb-3" style="opacity: 0.8;"></i>
+            <h2 class="text-white fw-bold">{{ object|yesno:"Update car,Add car" }}</h2>
+          </div>
+
+          <form action="" method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+
+            <div class="d-grid gap-3 mt-5">
+              <input type="submit" class="btn btn-primary btn-lg"
+                     value="{{ object|yesno:"Save Changes,Add to Garage" }}">
+              <a href="{% url 'cars:car-list' %}" class="btn btn-outline-light">
+                <i class="fas fa-arrow-left me-2"></i> Cancel
+              </a>
+            </div>
+          </form>
+        {% else %}
+          <div class="alert alert-warning text-center glass-effect border-0 text-white">
+            <i class="fas fa-lock me-2"></i> No permissions to change this car entry.
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+{% endblock %}

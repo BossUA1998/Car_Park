@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row justify-content-center align-items-center" style="min-height: 60vh;">
+    <div class="col-md-8 col-lg-6">
+
+      <div class="glass-card p-5 text-center slide-up-fade">
+        <div class="mb-4">
+          <div style="font-size: 4rem; color: #ba54f5;">
+            <i class="fas fa-check-circle"></i>
+          </div>
+        </div>
+
+        <h1 class="display-5 fw-bold text-white mb-3">Logged Out</h1>
+        <p class="lead" style="color: rgba(255,255,255,0.7);">
+          You have successfully logged out of the system. <br>
+          We hope to see you again soon!
+        </p>
+
+        <hr class="my-4" style="border-color: rgba(255,255,255,0.1);">
+
+        <a class="btn btn-primary btn-lg rounded-pill px-5" href="{% url 'login' %}" role="button">
+          Login Again
+        </a>
+      </div>
+
+    </div>
+  </div>
+{% endblock %}

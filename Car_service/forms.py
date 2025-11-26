@@ -1,0 +1,93 @@
+from django import forms
+from django.core.exceptions import ValidationError
+from datetime import datetime
+from Car_service.models import Seller, Car
+
+
+class SellerLicenseForm(forms.ModelForm):
+    class Meta:
+        model = Seller
+        fields = ["seller_license", "license_expiration_date"]
+        widgets = {
+            "license_expiration_date": forms.DateInput(
+                attrs={"type": "date"},
+                format="%Y-%m-%d",
+            ),
+        }
+
+    def __init__(self, user=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+
+    def clean_seller_license(self):
+        license_value = self.cleaned_data.get("seller_license")
+        if license_value:
+            if len(license_value) != 8:
+                raise ValidationError("License must be 8 characters long.")
+            elif not license_value[:3].isalpha():
+                raise ValidationError("License must start with a letter.")
+            elif not license_value[:3].isupper():
+                raise ValidationError("License must start with uppercase.")
+            elif not license_value[3:].isdigit():
+                raise ValidationError("License must contain with digit.")
+
+            qs_license = Seller.objects.filter(seller_license=license_value)
+
+            if self.instance.pk:
+                qs_license = qs_license.exclude(pk=self.instance.pk)
+
+            if qs_license.exists():
+                raise ValidationError("License is already registered.")
+
+        return license_value
+
+    def clean(self):
+        super().clean()
+
+        if self.user and self.user.is_authenticated:
+            qs_client = Seller.objects.filter(client=self.user)
+
+            if self.instance.pk:
+                qs_client = qs_client.exclude(pk=self.instance.pk)
+
+            if qs_client.exists():
+                raise ValidationError("You are already registered.")
+
+        return self.cleaned_data
+
+
+class CarCreateForm(forms.ModelForm):
+    class Meta:
+        model = Car
+        fields = ["model", "year", "mileage", "price", "comment", "manufacturer"]
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+
+    def clean(self):
+        super().clean()
+
+        if not self.user.is_seller:
+            raise ValidationError("You are not a seller.")
+
+        if (
+            Seller.objects.get(client=self.user).license_expiration_date
+            < datetime.now().date()
+        ):
+            raise ValidationError("Your license has expired.")
+
+        return self.cleaned_data
+
+
+# search forms
+class CarSearchForm(forms.Form):
+    model = forms.CharField(max_length=120)
+
+
+class ManufacturerSearchForm(forms.Form):
+    name = forms.CharField(max_length=120)
+
+
+class SellerSearchForm(forms.Form):
+    username = forms.CharField(max_length=120)

@@ -4,7 +4,7 @@ from django.conf import settings
 
 
 class Manufacturer(models.Model):
-    name = models.CharField(max_length=120)
+    name = models.CharField(max_length=120, unique=True)
     country = models.CharField(max_length=120)
 
     def __str__(self):
@@ -12,7 +12,9 @@ class Manufacturer(models.Model):
 
 
 class Client(AbstractUser):
-    is_seller = models.BooleanField(default=False, )
+    is_seller = models.BooleanField(
+        default=False,
+    )
 
     def save(
         self,
@@ -26,7 +28,7 @@ class Client(AbstractUser):
 
 class Seller(models.Model):
     client = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    seller_license = models.CharField(max_length=120)
+    seller_license = models.CharField(max_length=120, unique=True)
     license_expiration_date = models.DateField()
 
     def __str__(self):
@@ -37,8 +39,12 @@ class Car(models.Model):
     model = models.CharField(max_length=120)
     year = models.IntegerField()
     mileage = models.IntegerField()
-    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE)
-    owner = models.ForeignKey(Seller, on_delete=models.CASCADE)
+    price = models.IntegerField()
+    comment = models.CharField(max_length=255, blank=True, null=True)
+    manufacturer = models.ForeignKey(
+        Manufacturer, on_delete=models.CASCADE, related_name="cars"
+    )
+    owner = models.ForeignKey(Seller, on_delete=models.CASCADE, related_name="cars")
 
     def __str__(self):
         return self.model
