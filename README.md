@@ -47,7 +47,7 @@ The project features a modern interface with a "Glassmorphism" effect and animat
 git clone [https://github.com/BossUA1998/Car_Park](https://github.com/BossUA1998/Car_Park)
 cd Car_Park
 ```
-**Створіть віртуальне оточення:**
+**Create venv:**
 ```bash
 python -m venv venv
 ```
@@ -60,25 +60,24 @@ source venv/bin/activate # macOS/Linux
 venv\Scripts\activate # Windows
 ```
 
-**Встановіть залежності:**
+**Install the dependencies:**
 ```bash
 pip install -r requirements.txt
 ```
 
-**Запустіть міграції:**
+**Run migrations:**
 ```bash
 python manage.py migrate
 ```
 
-**Створіть суперюзера (для доступу до виробників):**
+**Create a superuser (for access to manufacturers)**
 ```bash
 python manage.py createsuperuser
 ```
 
-**Запустіть сервер:**
+**Run server:**
 ```bash
 python manage.py runserver
 ```
-**Або відвідайте наш сайт**
-https://car-park-yb8r.onrender.com
-Користувач для входу у файлі user_test.txt
+**Or visit our website**
+Or visit our website: https://car-park-yb8r.onrender.com Login user credentials are in the user_test.txt file.
