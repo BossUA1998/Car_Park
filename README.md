@@ -1,53 +1,52 @@
 # 🚗 Car Park Service
 
-Веб-застосунок для керування автопарком, розроблений на Django. Система дозволяє користувачам переглядати автомобілі, реєструватися як продавці та керувати оголошеннями, а адміністраторам — керувати списком виробників.
+A web application for fleet management developed on Django. The system allows users to view cars, register as sellers, and manage listings, while administrators manage the list of manufacturers.
 
-Проект має сучасний інтерфейс з ефектом "Glassmorphism" та анімаціями.
+The project features a modern interface with a "Glassmorphism" effect and animations.
 
-## 📋 Функціонал
+## 📋 Features
 
-### 🔹 Автомобілі (Cars)
-* **Перегляд:** Список авто з пагінацією та пошуком за моделлю.
-* **CRUD:** Створення, редагування та видалення автомобілів.
-* **Доступ:** Додавати авто можуть лише продавці з активною ліцензією. Редагувати — лише власник.
-* **Валідація:** Перевірка терміну дії ліцензії продавця перед додаванням авто.
+### 🔹 Cars (Autos)
+* **View:** List of cars with pagination and search by model.
+* **CRUD:** Create, edit, and delete cars.
+* **Access:** Only sellers with an active license can add cars. Only the owner can edit them.
+* **Validation:** Checks the validity period of the seller's license before adding a car.
 
-### 🔹 Продавці (Sellers)
-* **Реєстрація:** Користувачі можуть стати продавцями, вказавши ліцензію.
-* **Ліцензія:** Сувора валідація формату (8 символів: 3 літери + 5 цифр) та дати закінчення.
-* **Профіль:** Перегляд інформації про продавця.
+### 🔹 Sellers
+* **Registration:** Users can become sellers by providing a license.
+* **License:** Strict validation of format (8 characters: 3 letters + 5 digits) and expiration date.
+* **Profile:** View seller information.
 
-### 🔹 Виробники (Manufacturers)
-* **Управління:** Лише суперюзери можуть додавати, змінювати або видаляти виробників.
-* **Пошук:** Пошук виробників за назвою.
-* **Зв'язок:** Перегляд усіх авто конкретного виробника.
+### 🔹 Manufacturers
+* **Management:** Only superusers can add, change, or delete manufacturers.
+* **Search:** Search for manufacturers by name.
+* **Relation:** View all cars associated with a specific manufacturer.
 
-### 🔹 Інтерфейс (UI/UX)
-* **Дизайн:** Темна тема, напівпрозорі картки (Glassmorphism).
-* **Анімації:** Parallax-ефект фону, плавна поява елементів.
-* **Дашборд:** Статистика (кількість авто, продавців, виробників) та лічильник відвідувань.
+### 🔹 Interface (UI/UX)
+* **Design:** Dark theme, semi-transparent cards (Glassmorphism).
+* **Animations:** Parallax background effect, smooth element appearance.
+* **Dashboard:** Statistics (number of cars, sellers, manufacturers) and a visit counter.
 
-## 🛠 Технології
+## 🛠 Technologies
 
 * **Backend:** Python, Django
 * **Frontend:** HTML, CSS, JavaScript (Vanilla)
-* **База даних:** SQLite (за замовчуванням)
+* **Database:** Postgres remote database
 
-## 🔐 Особливості валідації
+## 🔐 Validation Features
 
-* **Ліцензія:** Має починатися з 3 великих літер і закінчуватися 5 цифрами (наприклад, `AAA12345`).
-* **Лічильник відвідувань:** Використовує сесії (`request.session`) для підрахунку візитів на головну сторінку.
-* **Заборона змінювати об'єкти:** На рівнях backend та frontend заборона змінювати об'єкти які не належать профілю
+* **License:** Must start with 3 uppercase letters and end with 5 digits (e.g., `AAA12345`).
+* **Visit Counter:** Uses sessions (`request.session`) to count visits to the main page.
+* **Object Modification Ban:** Backend and frontend restrictions prevent modification of objects that do not belong to the user's profile.
 
-Домашня сторінка:
+**Home Page:**
 <img width="1919" height="956" alt="image" src="https://github.com/user-attachments/assets/172df908-34ce-4b97-9cbe-a89474b20bd8" />
 
-**Клонуйте репозиторій:**
+**Clone the repository:**
 ```bash
-git clone https://github.com/BossUA1998/Car_Park
+git clone [https://github.com/BossUA1998/Car_Park](https://github.com/BossUA1998/Car_Park)
 cd Car_Park
 ```
-
 **Створіть віртуальне оточення:**
 ```bash
 python -m venv venv
