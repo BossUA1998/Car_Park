@@ -80,3 +80,6 @@ python manage.py createsuperuser
 ```bash
 python manage.py runserver
 ```
+**Або відвідайте наш сайт**
+https://car-park-yb8r.onrender.com
+Користувач для входу у файлі user_test.txt
